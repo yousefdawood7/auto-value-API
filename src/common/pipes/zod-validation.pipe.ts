@@ -4,22 +4,31 @@ import {
   InternalServerErrorException,
   PipeTransform,
 } from '@nestjs/common';
-import { SchemaService } from '../schema/schema.service';
+import z from 'zod';
+import { getZodSchema } from '../decorators/zod-schema.decorator';
+import { ERROR_CONFIG } from '../configs/error.config';
+import { handleZodErrors } from '../utils/handleZodErrors';
 
 export class ZodValidationPipe implements PipeTransform {
-  constructor(private schemaService: SchemaService) {}
+  transform(value: z.ZodType, metadata: ArgumentMetadata) {
+    const { metatype } = metadata;
 
-  transform(value: any, metadata: ArgumentMetadata) {
-    if (!metadata.metatype?.name) throw new InternalServerErrorException();
+    // prettier-ignore
+    if (!metatype)
+      throw new InternalServerErrorException();
 
-    const schema = this.schemaService
-      .get(metadata.metatype.name)
-      ?.safeParse(value);
+    const schema = getZodSchema(metatype);
 
-    console.log(schema?.error?.flatten().fieldErrors);
+    // prettier-ignore
+    if (!schema)
+      throw new InternalServerErrorException();
 
-    if (schema?.error)
-      throw new BadRequestException(undefined, { description: 'Error' });
+    const { error } = schema.safeParse(value);
+    if (error)
+      throw new BadRequestException({
+        ...ERROR_CONFIG.VALIDATION_ERROR,
+        details: { ...handleZodErrors(error) },
+      });
 
     return value;
   }
