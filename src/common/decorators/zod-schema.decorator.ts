@@ -8,14 +8,12 @@ type ParamsTypes = Array<{
 }>;
 
 export const ZodSchema = function (schema: z.ZodType) {
-  return (target: object, key: string, descriptor: PropertyDescriptor) => {
+  return (target: object, key: string) => {
     const [dtoType] = Reflect.getMetadata(
       PARAM_KEY,
       target,
       key,
     ) as ParamsTypes;
-
-    Reflect.defineMetadata(ZOD_KEY, schema, descriptor.value as object);
 
     Reflect.defineMetadata(ZOD_KEY, schema, dtoType);
   };
