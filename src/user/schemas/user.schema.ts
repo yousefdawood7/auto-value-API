@@ -12,7 +12,9 @@ export const userSchema = z.object({
     .max(255, 'Last name must not exceed 255 characters'),
 
   password: z
-    .union([z.string(), z.number()])
+    .union([z.string(), z.number()], {
+      error: 'Password must be a string or a number',
+    })
     .refine((val) => val.toString().length >= 10, {
       error: 'Password must be at least 10 characters long',
     }),
