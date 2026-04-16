@@ -4,7 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
-import { SchemaModule } from './common/schema/schema.module';
+import { ZodValidationPipe } from './common/pipes/zod-validation.pipe';
+import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 
 @Module({
   imports: [
@@ -14,11 +15,19 @@ import { SchemaModule } from './common/schema/schema.module';
       entities: [User],
       synchronize: true,
     }),
-    SchemaModule, // Global Module
     UserModule,
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [
+    {
+      provide: 'APP_PIPE',
+      useClass: ZodValidationPipe,
+    },
+    {
+      provide: 'APP_FILTER',
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}
