@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
-import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { ZodValidationPipe } from './common/pipes/zod-validation.pipe';
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
@@ -12,7 +11,7 @@ import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [User],
+      entities: [__dirname + '/**/*.entity.{ts,js}'],
       synchronize: true,
     }),
     UserModule,
