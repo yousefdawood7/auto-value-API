@@ -4,6 +4,6 @@ export class Name {
   @Column({ name: 'firstName' })
   first: string;
 
-  @Column({ name: 'lastName' })
+  @Column({ name: 'lastName', nullable: true })
   last: string;
 }

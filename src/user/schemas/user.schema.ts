@@ -11,10 +11,12 @@ export const userSchema = z.object({
     .min(3, 'First name must be at least 3 characters long')
     .max(255, 'First name must not exceed 255 characters'),
 
-  lastName: z
-    .string({ error: 'Last name is required' })
-    .min(3, 'Last name must be at least 3 characters long')
-    .max(255, 'Last name must not exceed 255 characters'),
+  lastName: z.optional(
+    z
+      .string({ error: 'Last name must be a string' })
+      .min(3, 'Last name must be at least 3 characters long')
+      .max(255, 'Last name must not exceed 255 characters'),
+  ),
 
   password: z
     .union([z.string(), z.number()], {
