@@ -1,21 +1,10 @@
-// import { STATUS_CODES } from "http";
-
-// {
-//     status: "success",
-//     statusCode: 200,
-//     data: {},
-//     message?: 'asd'
-//     details: {}// errors only
-//     data: {} // only for success
-// }
-
 import {
   ExceptionFilter,
   Catch,
   ArgumentsHost,
   HttpException,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import type { Response } from 'express';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
