@@ -1,7 +1,11 @@
 import z from 'zod';
 
 export const userSchema = z.object({
-  email: z.email({ error: 'Email is required' }),
+  email: z
+    .string({ error: 'Email is required' })
+    .min(1, { error: 'Email is required' })
+    .pipe(z.email({ error: 'Invalid email format' })),
+
   firstName: z
     .string({ error: 'First name is required' })
     .min(3, 'First name must be at least 3 characters long')
