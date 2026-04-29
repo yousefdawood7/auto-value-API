@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ZodValidationPipe } from './common/pipes/zod-validation.pipe';
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 @Module({
   imports: [
@@ -26,6 +27,10 @@ import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
     {
       provide: 'APP_FILTER',
       useClass: HttpExceptionFilter,
+    },
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: TransformInterceptor,
     },
   ],
 })

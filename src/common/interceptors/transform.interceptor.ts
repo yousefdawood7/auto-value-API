@@ -4,11 +4,20 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { User } from '../../user/entities/user.entity';
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    return next.handle();
+  intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
+    return next.handle().pipe(
+      map(({ id, ...user }: User) => ({
+        status: 'success',
+        id,
+        details: {
+          ...user,
+        },
+      })),
+    );
   }
 }
