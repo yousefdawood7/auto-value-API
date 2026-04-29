@@ -7,13 +7,14 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UserService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
-  createUser(body: CreateUserDto) {
+  async createUser(body: CreateUserDto) {
     const user = this.repo.create({
       email: body.email,
       name: { first: body.firstName, last: body.lastName },
       password: body.password,
     });
 
-    return this.repo.save(user);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return (({ password, ...user }) => user)(await this.repo.save(user));
   }
 }
