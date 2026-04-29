@@ -20,7 +20,7 @@ export const userSchema = z.object({
 
   password: z
     .union([z.string(), z.number()], {
-      error: 'Password must be a string or a number',
+      error: 'Password is required',
     })
     .refine((val) => val.toString().length >= 10, {
       error: 'Password must be at least 10 characters long',
