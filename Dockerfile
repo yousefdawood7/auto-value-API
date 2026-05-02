@@ -23,5 +23,7 @@ CMD ["pnpm", "start:dev"]
 
 FROM base as production
 
-CMD ["pnpm", "start"]
+RUN pnpm build
+
+CMD ["pnpm", "start:prod"]
 
