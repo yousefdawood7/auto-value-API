@@ -1,0 +1,4 @@
+services:
+  auto-value:
+    build:
+      target: production

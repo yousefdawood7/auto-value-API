@@ -1,0 +1,7 @@
+services:
+  auto-value:
+    build:
+      target: dev
+    volumes:
+      - /app/node_modules
+      - .:/app
