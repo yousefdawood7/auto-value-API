@@ -2,6 +2,8 @@ FROM node:alpine as base
 
 WORKDIR /app
 
+EXPOSE 3000
+
 COPY package*.json .
 
 RUN npm i pnpm@latest
@@ -14,6 +16,10 @@ COPY . .
 
 FROM base as dev
 
-EXPOSE 3000
 
 CMD ["pnpm", "start:dev"]
+
+FROM base as production
+
+CMD ["pnpm", "start"]
+
