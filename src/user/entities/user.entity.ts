@@ -21,7 +21,7 @@ export class User {
   password: string;
 
   @Expose()
-  get fullName(): string | void {
+  get fullName(): string | undefined {
     // prettier-ignore
     if (!this.name.last)
       return;
