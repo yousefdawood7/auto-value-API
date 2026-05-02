@@ -1,10 +1,10 @@
-FROM node:alpine as base
+FROM node:alpine AS base
 
 WORKDIR /app
 
 EXPOSE 3000
 
-COPY package*.json .
+COPY package.json .
 
 RUN npm i pnpm@latest
 
@@ -16,12 +16,12 @@ COPY . .
 
 RUN touch db.sqlite
 
-FROM base as dev
+FROM base AS dev
 
 
 CMD ["pnpm", "start:dev"]
 
-FROM base as production
+FROM base AS production
 
 RUN pnpm build
 
