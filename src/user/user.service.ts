@@ -14,7 +14,6 @@ export class UserService {
       password: body.password,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    return (({ password, ...user }) => user)(await this.repo.save(user));
+    return this.repo.save(user);
   }
 }

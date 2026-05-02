@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
@@ -31,6 +31,10 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
     {
       provide: 'APP_INTERCEPTOR',
       useClass: TransformInterceptor,
+    },
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: ClassSerializerInterceptor,
     },
   ],
 })
