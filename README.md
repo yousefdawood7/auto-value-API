@@ -3,14 +3,14 @@
 </h1>
 
 <p align="center">
-  A clean, type-safe REST API built with <a href="https://nestjs.com" target="_blank">NestJS</a>, <a href="https://typeorm.io" target="_blank">TypeORM</a>, and <a href="https://zod.dev" target="_blank">Zod</a> — designed for managing and evaluating vehicle value data.
+  A clean, type-safe REST API built with <a href="https://nestjs.com" target="_blank">NestJS</a>, <a href="https://typeorm.io" target="_blank">TypeORM</a>, and <a href="https://zod.dev" target="_blank">Zod v4</a> — designed for managing and evaluating vehicle value data.
 </p>
 
 <p align="center">
   <img alt="NestJS" src="https://img.shields.io/badge/NestJS-11-E0234E?style=flat-square&logo=nestjs&logoColor=white" />
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat-square&logo=typescript&logoColor=white" />
   <img alt="TypeORM" src="https://img.shields.io/badge/TypeORM-0.3-orange?style=flat-square" />
-  <img alt="Zod" src="https://img.shields.io/badge/Zod-4-3E67B1?style=flat-square" />
+  <img alt="Zod" src="https://img.shields.io/badge/Zod-4.3-3E67B1?style=flat-square" />
   <img alt="SQLite" src="https://img.shields.io/badge/SQLite-local%20DB-003B57?style=flat-square&logo=sqlite&logoColor=white" />
   <img alt="pnpm" src="https://img.shields.io/badge/pnpm-workspace-F69220?style=flat-square&logo=pnpm&logoColor=white" />
 </p>
@@ -19,11 +19,11 @@
 
 ## 📖 Overview
 
-**AutoValue API** is a backend REST API built with **NestJS** and **TypeScript**. It provides a modular, scalable foundation for managing user accounts with strict runtime validation using **Zod schemas** — making it the perfect backbone for any auto valuation platform.
+**AutoValue API** is a backend REST API built with **NestJS** and **TypeScript**. It provides a modular, scalable foundation for managing user accounts with strict runtime validation using **Zod v4 schemas** — making it the perfect backbone for any auto valuation platform.
 
 Key highlights:
 
-- ✅ **Zod-powered validation** — runtime-safe request body validation via a custom `@ZodSchema` decorator
+- ✅ **Zod v4 validation** — runtime-safe request body validation via a custom `@ZodSchema` method decorator
 - ✅ **TypeORM with SQLite** — zero-config database with auto schema sync for rapid development
 - ✅ **Custom global pipes & filters** — centralized error handling and validation logic
 - ✅ **Clean modular architecture** — `auth`, `user`, and `common` modules separated by responsibility
@@ -45,14 +45,14 @@ src/
 ├── user/                   # User management module
 │   ├── dto/                # Data Transfer Objects
 │   ├── entities/           # TypeORM entities (User, Name)
-│   ├── schemas/            # Zod validation schemas
+│   ├── schemas/            # Zod v4 validation schemas
 │   ├── user.controller.ts
 │   ├── user.module.ts
 │   └── user.service.ts
 │
 └── common/                 # Shared utilities
     ├── configs/
-    ├── decorators/         # @ZodSchema custom decorator
+    ├── decorators/         # @ZodSchema custom method decorator
     ├── exceptions/         # Global HTTP exception filter
     ├── interceptors/
     ├── keys/               # Reflect metadata keys
@@ -72,14 +72,14 @@ src/
 
 ### Validation Rules
 
-The request body is validated against a **Zod schema** at the decorator level — invalid requests are rejected before reaching the service layer.
+The request body is validated against a **Zod v4 schema** at the decorator level — invalid requests are rejected before reaching the service layer.
 
-| Field       | Rules                                             |
-| ----------- | ------------------------------------------------- |
-| `email`     | Required, valid email format                      |
-| `firstName` | Required, 3–255 characters                        |
-| `lastName`  | Optional, 3–255 characters                        |
-| `password`  | Required, string or number, minimum 10 characters |
+| Field       | Rules                                                              |
+| ----------- | ------------------------------------------------------------------ |
+| `email`     | Required, piped through `z.email()` for strict format validation   |
+| `firstName` | Required, 3–255 characters                                         |
+| `lastName`  | Optional, 3–255 characters                                         |
+| `password`  | Required, string or number union, minimum 10 characters (via refine) |
 
 ---
 
@@ -139,7 +139,7 @@ pnpm run test:e2e
 | [TypeScript 5.7](https://www.typescriptlang.org) | Type safety                |
 | [TypeORM 0.3](https://typeorm.io)                | ORM & database management  |
 | [SQLite](https://www.sqlite.org)                 | Lightweight local database |
-| [Zod 4](https://zod.dev)                         | Runtime schema validation  |
+| [Zod 4.3](https://zod.dev)                       | Runtime schema validation  |
 | [Prettier](https://prettier.io)                  | Code formatting            |
 | [ESLint](https://eslint.org)                     | Code linting               |
 
@@ -149,7 +149,7 @@ pnpm run test:e2e
 
 ### Custom `@ZodSchema` Decorator
 
-Instead of using NestJS's built-in `class-validator`, this API uses a custom `@ZodSchema()` method decorator that attaches a Zod schema to the DTO class via `reflect-metadata`. The global `ZodValidationPipe` reads this metadata at request time and validates the incoming body — giving you expressive, type-safe schemas without extra boilerplate.
+Instead of using NestJS's built-in `class-validator`, this API uses a custom `@ZodSchema()` **method** decorator that attaches a Zod schema to the route handler via `reflect-metadata`. The global `ZodValidationPipe` reads this metadata at request time and validates the incoming body — giving you expressive, type-safe schemas without any DTO boilerplate.
 
 ```ts
 @ZodSchema(createUserSchema)
@@ -157,6 +157,17 @@ Instead of using NestJS's built-in `class-validator`, this API uses a custom `@Z
 createUser(@Body() body: CreateUserDto) {
   return this.userService.createUser(body);
 }
+```
+
+### Zod v4 Schema Design
+
+Schemas use Zod v4's new `error` option syntax (replacing `message`) and `.pipe()` for chained validations:
+
+```ts
+email: z
+  .string({ error: 'Email is required' })
+  .min(1, { error: 'Email is required' })
+  .pipe(z.email({ error: 'Invalid email format' })),
 ```
 
 ### Global Exception Filter
@@ -178,3 +189,9 @@ A custom `HttpExceptionFilter` is registered globally to return consistent, stru
 | `pnpm run test`       | Run unit tests                |
 | `pnpm run test:e2e`   | Run end-to-end tests          |
 | `pnpm run test:cov`   | Generate coverage report      |
+
+---
+
+## 📄 License
+
+This project is private and unlicensed.
