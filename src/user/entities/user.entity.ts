@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Name } from './name';
 import { Exclude, Expose, Transform } from 'class-transformer';
 
 @Entity()
@@ -10,11 +9,12 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Transform(({ value }: { value: { first: string; last?: string } }) =>
-    value.last ? value : { first: value.first },
-  )
-  @Column(() => Name, { prefix: false })
-  name: Name;
+  @Column()
+  firstName: string;
+
+  @Column({ nullable: true })
+  @Transform(({ value }: { value?: string }) => value ?? undefined)
+  lastName?: string;
 
   @Exclude()
   @Column()
@@ -23,8 +23,8 @@ export class User {
   @Expose()
   get fullName(): string | undefined {
     // prettier-ignore
-    if (!this.name.last)
+    if (!this.lastName)
       return;
-    return `${this.name.first} ${this.name.last}`;
+    return `${this.firstName} ${this.lastName}`;
   }
 }
