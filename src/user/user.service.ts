@@ -10,7 +10,8 @@ export class UserService {
   async createUser(body: CreateUserDto) {
     const user = this.repo.create({
       email: body.email,
-      name: { first: body.firstName, last: body.lastName },
+      firstName: body.firstName,
+      lastName: body.lastName,
       password: body.password,
     });
 
