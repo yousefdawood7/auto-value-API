@@ -11,7 +11,7 @@ export class CreateUserDto {
   password: string;
 
   @Expose()
-  get fullName(): string | undefined {
+  get fullName() {
     // prettier-ignore
     if (!this.lastName)
       return;
