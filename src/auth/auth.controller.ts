@@ -16,7 +16,7 @@ export class AuthController {
 
   @ZodSchema(createUserSchema)
   @Post('signup')
-  createUser(@Body() body: CreateUserDto) {
-    return this.userService.createUser(body);
+  signup(@Body() body: CreateUserDto) {
+    return this.authService.signup(body);
   }
 }
