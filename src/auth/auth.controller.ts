@@ -9,10 +9,10 @@ import { SignInUserDto } from '../user/dto/signin-user.dto';
 import { AuthGuard } from '../common/guards/auth.guard';
 
 @Controller('auth')
-@Serialize(CreateUserDto)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Serialize(CreateUserDto)
   @ZodSchema(createUserSchema)
   @Post('signup')
   signUp(@Body() body: CreateUserDto) {
@@ -23,6 +23,6 @@ export class AuthController {
   @Post('signin')
   @UseGuards(AuthGuard)
   signIn(@Body() body: SignInUserDto) {
-    console.log(body);
+    return this.authService.signin(body);
   }
 }

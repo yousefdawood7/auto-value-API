@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserService } from '../user/user.service';
-import { randomBytes, scrypt as _scrypt } from 'crypto';
-import { promisify } from 'util';
+import { randomBytes } from 'crypto';
+import { SignInUserDto } from '../user/dto/signin-user.dto';
+import { hashPassword } from '../common/utils/hashPassword';
+import { ERROR_CONFIG } from '../common/configs/error.config';
 
 @Injectable()
 export class AuthService {
@@ -10,19 +12,28 @@ export class AuthService {
 
   async signup(body: CreateUserDto) {
     const salt = randomBytes(8).toString('hex');
-    const scrypt = promisify(_scrypt);
-    console.log(body.password);
-    const hashedSaltedPassword =
-      ((await scrypt(body.password, salt, 32)) as Buffer).toString('hex') +
-      '.' +
-      salt;
 
-    console.log(salt);
-    console.log(hashedSaltedPassword);
+    const hashedSaltedPassword =
+      salt + '.' + (await hashPassword(body.password, salt));
 
     return this.userService.createUser({
       ...body,
       password: hashedSaltedPassword,
     });
+  }
+
+  async signin(body: SignInUserDto) {
+    const user = await this.userService.findUserByEmail(body.email);
+    const [userSalt, userPassword] = user?.password.split('.') as [
+      string,
+      string,
+    ];
+
+    const signedInPassword = await hashPassword(body.password, userSalt);
+
+    if (signedInPassword !== userPassword)
+      throw new NotFoundException(ERROR_CONFIG.AUTHENTICATION_ERROR);
+
+    return 'user signed In successfully';
   }
 }

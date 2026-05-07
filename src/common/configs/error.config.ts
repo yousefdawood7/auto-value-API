@@ -14,7 +14,7 @@ export const ERROR_CONFIG = {
 
   AUTHENTICATION_ERROR: {
     status: 'fail',
-    message: 'Email or password is incorrect',
+    message: 'email or password is incorrect',
   },
 
   INTERNAL_ERROR: {
