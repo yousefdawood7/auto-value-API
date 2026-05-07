@@ -5,6 +5,8 @@ import { ZodSchema } from '../common/decorators/zod-schema.decorator';
 import { createUserSchema } from '../user/schemas/create-user.schema';
 import { UserService } from '../user/user.service';
 import { Serialize } from '../common/decorators/serialize.decorator';
+import { signInUserSchema } from '../user/schemas/signin-user.schema';
+import { SignInUserDto } from '../user/dto/signin-user.dto';
 
 @Controller('auth')
 @Serialize(CreateUserDto)
@@ -16,7 +18,11 @@ export class AuthController {
 
   @ZodSchema(createUserSchema)
   @Post('signup')
-  signup(@Body() body: CreateUserDto) {
+  signUp(@Body() body: CreateUserDto) {
     return this.authService.signup(body);
   }
+
+  @ZodSchema(signInUserSchema)
+  @Post('signin')
+  signIn(@Body() body: SignInUserDto) {}
 }
