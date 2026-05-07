@@ -5,18 +5,14 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../user/entities/user.entity';
-import type { Repository } from 'typeorm';
 import type { Request } from 'express';
 import { SignInUserDto } from '../../user/dto/signin-user.dto';
 import { ERROR_CONFIG } from '../configs/error.config';
+import { UserService } from '../../user/user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(
-    @InjectRepository(User) private readonly repo: Repository<User>,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const { body } = context
@@ -27,11 +23,7 @@ export class AuthGuard implements CanActivate {
     if (!body.email)
       throw new BadRequestException();
 
-    const user = await this.repo.findOne({
-      where: {
-        email: body.email,
-      },
-    });
+    const user = await this.userService.findUserByEmail(body.email);
 
     // prettier-ignore
     if (!user)
