@@ -10,12 +10,23 @@ import { map, Observable } from 'rxjs';
 export class TransformInterceptor implements NestInterceptor {
   intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map((data: { [key: string]: unknown }) => ({
-        status: 'success',
-        details: {
-          ...data,
-        },
-      })),
+      map((data: { [key: string]: unknown }) => {
+        if (typeof data === 'string')
+          return { status: 'success', message: data };
+
+        const { message, ...serializedData } = data;
+
+        return {
+          status: 'success',
+          ...((message as string) && { message }),
+
+          ...(Object.keys(serializedData).length && {
+            details: {
+              ...serializedData,
+            },
+          }),
+        };
+      }),
     );
   }
 }
