@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ZodValidationPipe } from './common/pipes/zod-validation.pipe';
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { AuthGuard } from './common/guards/auth.guard';
 
 @Module({
   imports: [
