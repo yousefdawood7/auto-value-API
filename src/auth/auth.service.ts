@@ -5,6 +5,8 @@ import { randomBytes } from 'crypto';
 import { SignInUserDto } from '../user/dto/signin-user.dto';
 import { hashPassword } from '../common/utils/hashPassword';
 import { ERROR_CONFIG } from '../common/configs/error.config';
+import { plainToInstance } from 'class-transformer';
+import { UserDto } from '../user/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -34,6 +36,9 @@ export class AuthService {
     if (signedInPassword !== userPassword)
       throw new NotFoundException(ERROR_CONFIG.AUTHENTICATION_ERROR);
 
-    return 'user signed In successfully';
+    return {
+      message: 'user signed in successfully',
+      ...plainToInstance(UserDto, user),
+    };
   }
 }
