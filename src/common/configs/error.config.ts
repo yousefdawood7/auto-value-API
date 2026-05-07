@@ -12,6 +12,11 @@ export const ERROR_CONFIG = {
     message: 'Validation failed',
   },
 
+  AUTHENTICATION_ERROR: {
+    status: 'fail',
+    message: 'Email or password is incorrect',
+  },
+
   INTERNAL_ERROR: {
     status: 'error',
     message: 'Something went wrong',

@@ -1,7 +1,7 @@
 import z from 'zod';
 
 export const handleZodErrors = function (zodError: z.ZodError) {
-  const errorObjects = {};
+  const errorObjects: Record<string, string> = {};
 
   Object.entries(z.flattenError<unknown>(zodError).fieldErrors).forEach(
     (fieldError) =>
