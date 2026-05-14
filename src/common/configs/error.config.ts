@@ -14,7 +14,12 @@ export const ERROR_CONFIG = {
 
   AUTHENTICATION_ERROR: {
     status: 'fail',
-    message: 'email or password is incorrect',
+    message: 'Email or password is incorrect',
+  },
+
+  EMAIL_ALREDY_EXISTS: {
+    status: 'fail',
+    message: 'Email is already exists',
   },
 
   INTERNAL_ERROR: {
