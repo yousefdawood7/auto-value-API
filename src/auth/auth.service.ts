@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserService } from '../user/user.service';
 import { randomBytes } from 'crypto';
@@ -34,7 +34,7 @@ export class AuthService {
     const signedInPassword = await hashPassword(body.password, userSalt);
 
     if (signedInPassword !== userPassword)
-      throw new NotFoundException(ERROR_CONFIG.AUTHENTICATION_ERROR);
+      throw new UnauthorizedException(ERROR_CONFIG.AUTHENTICATION_ERROR);
 
     return {
       message: 'user signed in successfully',

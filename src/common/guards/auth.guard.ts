@@ -3,7 +3,7 @@ import {
   CanActivate,
   ExecutionContext,
   BadRequestException,
-  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { SignInUserDto } from '../../user/dto/signin-user.dto';
@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate {
 
     // prettier-ignore
     if (!user)
-      throw new NotFoundException(ERROR_CONFIG.AUTHENTICATION_ERROR);
+      throw new UnauthorizedException(ERROR_CONFIG.AUTHENTICATION_ERROR);
 
     return true;
   }
