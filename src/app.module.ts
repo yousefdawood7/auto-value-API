@@ -6,7 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ZodValidationPipe } from './common/pipes/zod-validation.pipe';
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import cookieSession from 'cookie-session';
 import { AuthController } from './auth/auth.controller';
 
@@ -42,13 +42,16 @@ import { AuthController } from './auth/auth.controller';
   ],
 })
 export class AppModule implements NestModule {
+  constructor(private readonly configService: ConfigService) {}
+
   configure(consumer: MiddlewareConsumer) {
+    const secretKey = this.configService.get<string>('SECRET_KEY');
+    if (!secretKey) {
+      throw new Error('SECRET_KEY is required to sign session cookies');
+    }
+
     consumer
-      .apply(
-        cookieSession({
-          keys: [process.env.SECRET_KEY!],
-        }),
-      )
+      .apply(cookieSession({ keys: [secretKey] }))
       .forRoutes(AuthController);
   }
 }
