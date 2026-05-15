@@ -7,9 +7,9 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import type { Request } from 'express';
-import { SignInUserDto } from '../../user/dto/signin-user.dto';
 import { ERROR_CONFIG } from '../configs/error.config';
 import { UserService } from '../../user/user.service';
+import { CreateUserDto } from '../../user/dto/create-user.dto';
 
 @Injectable()
 export class SignUpGuard implements CanActivate {
@@ -18,7 +18,7 @@ export class SignUpGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const { body } = context
       .switchToHttp()
-      .getRequest<Request<unknown, unknown, SignInUserDto>>();
+      .getRequest<Request<unknown, unknown, CreateUserDto>>();
 
     // prettier-ignore
     if (!body.email)
