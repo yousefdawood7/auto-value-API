@@ -23,7 +23,7 @@ export class AuthController {
     @Body() body: CreateUserDto,
     @Session() session: Record<string, unknown>,
   ) {
-    return this.authService.signup(session, body);
+    return this.authService.signup(body, session);
   }
 
   @ZodSchema(signInUserSchema)

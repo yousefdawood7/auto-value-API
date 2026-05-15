@@ -1,4 +1,4 @@
-import { Injectable, Session, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserService } from '../user/user.service';
 import { randomBytes } from 'crypto';
@@ -12,10 +12,7 @@ import { UserDto } from '../user/dto/user.dto';
 export class AuthService {
   constructor(private readonly userService: UserService) {}
 
-  async signup(
-    @Session() session: Record<string, unknown>,
-    body: CreateUserDto,
-  ) {
+  async signup(body: CreateUserDto, session: Record<string, unknown>) {
     const salt = randomBytes(8).toString('hex');
 
     const hashedSaltedPassword =
@@ -31,10 +28,7 @@ export class AuthService {
     });
   }
 
-  async signin(
-    body: SignInUserDto,
-    @Session() session: Record<string, unknown>,
-  ) {
+  async signin(body: SignInUserDto, session: Record<string, unknown>) {
     const user = await this.userService.findUserByEmail(body.email);
     const [userSalt, userPassword] = user?.password.split('.') as [
       string,
