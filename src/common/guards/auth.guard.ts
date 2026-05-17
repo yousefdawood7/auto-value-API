@@ -20,8 +20,8 @@ export class AuthGuard implements CanActivate {
       .getRequest<Request<unknown, unknown, SignInUserDto>>();
 
     // prettier-ignore
-    if (!body.email)
-      throw new BadRequestException();
+    if (!body?.email)
+      throw new BadRequestException({message: 'Email is required'});
 
     const user = await this.userService.findUserByEmail(body.email);
 
