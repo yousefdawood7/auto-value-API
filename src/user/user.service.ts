@@ -28,4 +28,14 @@ export class UserService {
 
     return user;
   }
+
+  findUserById(id: number) {
+    const user = this.repo.findOne({
+      where: {
+        id,
+      },
+    });
+
+    return user;
+  }
 }

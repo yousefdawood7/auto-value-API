@@ -35,4 +35,9 @@ export class AuthController {
   ) {
     return this.authService.signin(body, session);
   }
+
+  @Post('signout')
+  signOut(@Session() session: Partial<{ user: { email?: string } }>) {
+    return this.authService.signout(session);
+  }
 }

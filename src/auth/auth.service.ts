@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserService } from '../user/user.service';
 import { randomBytes } from 'crypto';
@@ -48,5 +52,25 @@ export class AuthService {
       message: 'user signed in successfully',
       ...user,
     };
+  }
+
+  async signout(session: Partial<{ user: { email?: string } }>) {
+    const email = session?.user?.email;
+
+    console.log(session);
+    // prettier-ignore
+    if (!session.user || !email)
+      throw new BadRequestException({ message: 'User not found' });
+
+    const user = await this.userService.findUserByEmail(email);
+
+    // prettier-ignore
+    if (!user)
+      throw new BadRequestException({ message: 'User not found' });
+
+    // log user out (by deleting session)
+    session.user = {};
+
+    return 'user logged out successfully';
   }
 }
