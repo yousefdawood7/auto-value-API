@@ -9,6 +9,7 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import cookieSession from 'cookie-session';
 import { AuthController } from './auth/auth.controller';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -28,15 +29,15 @@ import { AuthController } from './auth/auth.controller';
   controllers: [AppController],
   providers: [
     {
-      provide: 'APP_PIPE',
+      provide: APP_PIPE,
       useClass: ZodValidationPipe,
     },
     {
-      provide: 'APP_FILTER',
+      provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
     {
-      provide: 'APP_INTERCEPTOR',
+      provide: APP_INTERCEPTOR,
       useClass: TransformInterceptor,
     },
   ],
