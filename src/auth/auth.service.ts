@@ -22,14 +22,16 @@ export class AuthService {
     const hashedSaltedPassword =
       salt + '.' + (await hashPassword(body.password, salt));
 
+    const user = await this.userService.createUser({
+      ...body,
+      password: hashedSaltedPassword,
+    });
+
     session.user = {
       ...instanceToPlain(plainToInstance(UserDto, body)),
     };
 
-    return this.userService.createUser({
-      ...body,
-      password: hashedSaltedPassword,
-    });
+    return user;
   }
 
   async signin(body: SignInUserDto, session: Record<string, unknown>) {
@@ -57,7 +59,6 @@ export class AuthService {
   async signout(session: Partial<{ user: { email?: string } }>) {
     const email = session?.user?.email;
 
-    console.log(session);
     // prettier-ignore
     if (!session.user || !email)
       throw new BadRequestException({ message: 'User not found' });
