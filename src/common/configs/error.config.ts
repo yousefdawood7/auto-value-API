@@ -12,6 +12,16 @@ export const ERROR_CONFIG = {
     message: 'Validation failed',
   },
 
+  AUTHENTICATION_ERROR: {
+    status: 'fail',
+    message: 'Email or password is incorrect',
+  },
+
+  EMAIL_ALREDY_EXISTS: {
+    status: 'fail',
+    message: 'Email is already exists',
+  },
+
   INTERNAL_ERROR: {
     status: 'error',
     message: 'Something went wrong',

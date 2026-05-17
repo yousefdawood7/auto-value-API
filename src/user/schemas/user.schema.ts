@@ -26,3 +26,5 @@ export const userSchema = z.object({
       error: 'Password must be at least 10 characters long',
     }),
 });
+
+export type UserType = z.infer<typeof userSchema>;

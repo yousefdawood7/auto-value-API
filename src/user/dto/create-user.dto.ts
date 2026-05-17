@@ -1,20 +1,3 @@
-import { Exclude, Expose, Transform } from 'class-transformer';
+import { UserDto } from './user.dto';
 
-export class CreateUserDto {
-  email: string;
-  firstName: string;
-
-  @Transform(({ value }: { value?: string }) => value ?? undefined)
-  lastName?: string;
-
-  @Exclude()
-  password: string;
-
-  @Expose()
-  get fullName() {
-    // prettier-ignore
-    if (!this.lastName)
-      return;
-    return `${this.firstName} ${this.lastName}`;
-  }
-}
+export class CreateUserDto extends UserDto {}
