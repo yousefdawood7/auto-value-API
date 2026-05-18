@@ -3,11 +3,14 @@ import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { UnauthorizedException } from '@nestjs/common';
+import { ERROR_CONFIG } from '../common/configs/error.config';
 
 describe('AuthService', () => {
   let authService: AuthService;
   const mockUserService = {
     createUser: jest.fn<(body: CreateUserDto) => Promise<unknown>>(),
+    findUserByEmail: jest.fn<(email: string) => Promise<unknown>>(),
   };
 
   const mockedBody: CreateUserDto = {
@@ -18,12 +21,6 @@ describe('AuthService', () => {
   };
 
   const mockSession = {};
-
-  mockUserService.createUser.mockResolvedValue({
-    id: 1,
-    ...mockedBody,
-    password: 'hashed-password',
-  });
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -40,6 +37,11 @@ describe('AuthService', () => {
   });
 
   it('should signup the user successfully', async () => {
+    mockUserService.createUser.mockResolvedValue({
+      id: 1,
+      ...mockedBody,
+      password: 'hashed-password',
+    });
     const signedInUser = await authService.signup(mockedBody, mockSession);
 
     expect(mockUserService.createUser).toHaveBeenCalled();
@@ -63,5 +65,27 @@ describe('AuthService', () => {
       ...mockedBody,
       password: 'hashed-password',
     });
+  });
+
+  it('should signin the user unsuccessfully', async () => {
+    mockUserService.findUserByEmail.mockResolvedValue({
+      id: 1,
+      email: mockedBody.email,
+      password: 'SALT.HASHED_PASSWORD',
+    });
+    const signedInUser = authService.signin(
+      {
+        email: mockedBody.email,
+        password: mockedBody.password,
+      },
+      mockSession,
+    );
+
+    expect(mockUserService.findUserByEmail).toHaveBeenCalledWith(
+      mockedBody.email,
+    );
+    await expect(signedInUser).rejects.toThrow(
+      new UnauthorizedException(ERROR_CONFIG.AUTHENTICATION_ERROR),
+    );
   });
 });
