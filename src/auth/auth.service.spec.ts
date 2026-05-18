@@ -137,7 +137,7 @@ describe('AuthService', () => {
       password: `SALT.${await hashPassword(mockedBody.password, 'SALT')}`,
     });
 
-    const loggedOutUser = await authService.signout(mockedSignedOutSession);
+    const loggedoutUser = await authService.signout(mockedSignedOutSession);
 
     expect(mockUserService.findUserByEmail).toHaveBeenCalledWith(
       mockedBody.email,
@@ -145,6 +145,6 @@ describe('AuthService', () => {
 
     expect(mockedSignedOutSession).toEqual({ user: {} });
 
-    expect(loggedOutUser).toBe('user logged out successfully');
+    expect(loggedoutUser).toBe('user logged out successfully');
   });
 });
