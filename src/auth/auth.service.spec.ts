@@ -93,6 +93,7 @@ describe('AuthService', () => {
         fullName: mockedBody.firstName + ' ' + mockedBody.lastName,
       },
     });
+
     expect(signedInUser).toEqual({
       message: 'user signed in successfully',
       id: 1,
@@ -121,5 +122,29 @@ describe('AuthService', () => {
     await expect(signedInUser).rejects.toThrow(
       new UnauthorizedException(ERROR_CONFIG.AUTHENTICATION_ERROR),
     );
+  });
+
+  it('should signout the user successfully', async () => {
+    const mockedSignedOutSession = {
+      user: {
+        email: mockedBody.email,
+      },
+    };
+
+    mockUserService.findUserByEmail.mockResolvedValue({
+      id: 1,
+      ...mockedBody,
+      password: `SALT.${await hashPassword(mockedBody.password, 'SALT')}`,
+    });
+
+    const loggedOutUser = await authService.signout(mockedSignedOutSession);
+
+    expect(mockUserService.findUserByEmail).toHaveBeenCalledWith(
+      mockedBody.email,
+    );
+
+    expect(mockedSignedOutSession).toEqual({ user: {} });
+
+    expect(loggedOutUser).toBe('user logged out successfully');
   });
 });
