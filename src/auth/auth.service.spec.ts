@@ -5,6 +5,7 @@ import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UnauthorizedException } from '@nestjs/common';
 import { ERROR_CONFIG } from '../common/configs/error.config';
+import { hashPassword } from '../common/utils/hashPassword';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -64,6 +65,39 @@ describe('AuthService', () => {
       id: 1,
       ...mockedBody,
       password: 'hashed-password',
+    });
+  });
+
+  it('should signin the user successfully', async () => {
+    mockUserService.findUserByEmail.mockResolvedValue({
+      id: 1,
+      ...mockedBody,
+      password: `SALT.${await hashPassword(mockedBody.password, 'SALT')}`,
+    });
+
+    const signedInUser = await authService.signin(
+      { email: mockedBody.email, password: mockedBody.password },
+      mockSession,
+    );
+
+    expect(mockUserService.findUserByEmail).toHaveBeenCalledWith(
+      mockedBody.email,
+    );
+
+    expect(mockSession).toEqual({
+      user: {
+        id: 1,
+        email: mockedBody.email,
+        firstName: mockedBody.firstName,
+        lastName: mockedBody.lastName,
+        fullName: mockedBody.firstName + ' ' + mockedBody.lastName,
+      },
+    });
+    expect(signedInUser).toEqual({
+      message: 'user signed in successfully',
+      id: 1,
+      ...mockedBody,
+      password: `SALT.${await hashPassword(mockedBody.password, 'SALT')}`,
     });
   });
 
