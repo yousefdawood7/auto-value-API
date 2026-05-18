@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { ERROR_CONFIG } from '../common/configs/error.config';
 import { hashPassword } from '../common/utils/hashPassword';
 
@@ -146,5 +146,17 @@ describe('AuthService', () => {
     expect(mockedSignedOutSession).toEqual({ user: {} });
 
     expect(loggedoutUser).toBe('user logged out successfully');
+  });
+
+  it('should signout the user unsuccessfully', async () => {
+    const mockedSignedOutSession = {
+      user: {}, // Mocked session without email
+    };
+
+    const loggedoutUser = authService.signout(mockedSignedOutSession);
+
+    await expect(loggedoutUser).rejects.toThrow(
+      new BadRequestException({ message: 'User not found' }),
+    );
   });
 });
