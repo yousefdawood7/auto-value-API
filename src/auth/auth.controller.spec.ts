@@ -21,13 +21,21 @@ describe('AuthController', () => {
       jest.fn<
         (body: CreateUserDto, session: Record<string, unknown>) => Promise<User>
       >(),
-    signin:
-      jest.fn<
-        (
-          body: SignInUserDto,
-          session: Record<string, unknown>,
-        ) => Promise<Partial<User> & { message: string }>
-      >(),
+    signin: jest.fn<
+      (
+        body: SignInUserDto,
+        session: Record<string, unknown>,
+      ) => Promise<Partial<User> & { message: string }>
+    >((body, session) => {
+      session.user = {
+        email: body.email,
+      };
+
+      return Promise.resolve({
+        message: 'user signed in successfully',
+        email: body.email,
+      });
+    }),
     signout:
       jest.fn<
         (
@@ -53,24 +61,21 @@ describe('AuthController', () => {
 
   it('should signin the controller successfully', async () => {
     const mockSession = {};
+
     const mockUserBody: SignInUserDto = {
       email: 'email@example.com',
       password: 'Test123123Test',
     };
 
-    mockAuthService.signin.mockResolvedValue({
-      message: 'user signed in successfully',
-      email: mockUserBody.email,
-    });
-
     const user = await authController.signIn(mockUserBody, mockSession);
 
     expect(mockAuthService.signin).toBeDefined();
+    expect(mockAuthService.signin).toHaveBeenCalled();
     expect(mockAuthService.signin).toHaveBeenCalledWith(
       { ...mockUserBody },
       mockSession,
     );
-
     expect(user.email).toBe(mockUserBody.email);
+    expect(mockSession).toEqual({ user: { email: mockUserBody.email } });
   });
 });
