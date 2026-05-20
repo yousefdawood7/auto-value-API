@@ -1,4 +1,5 @@
 import { it, beforeEach, describe, jest, expect } from '@jest/globals';
+
 import { Test } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -10,12 +11,12 @@ import { User } from '../user/entities/user.entity';
 describe('AuthController', () => {
   let authController: AuthController;
 
-  const mockUserService: Partial<UserService> = {
+  const mockUserService = {
     createUser: jest.fn<(body: CreateUserDto) => Promise<User>>(),
     findUserByEmail: jest.fn<(email: string) => Promise<User>>(),
   };
 
-  const mockAuthService: Partial<AuthService> = {
+  const mockAuthService = {
     signup:
       jest.fn<
         (body: CreateUserDto, session: Record<string, unknown>) => Promise<User>
@@ -25,7 +26,7 @@ describe('AuthController', () => {
         (
           body: SignInUserDto,
           session: Record<string, unknown>,
-        ) => Promise<User & { message: string }>
+        ) => Promise<Partial<User> & { message: string }>
       >(),
     signout:
       jest.fn<
@@ -57,6 +58,11 @@ describe('AuthController', () => {
       password: 'Test123123Test',
     };
 
+    mockAuthService.signin.mockResolvedValue({
+      message: 'user signed in successfully',
+      email: mockUserBody.email,
+    });
+
     const user = await authController.signIn(mockUserBody, mockSession);
 
     expect(mockAuthService.signin).toBeDefined();
@@ -64,5 +70,7 @@ describe('AuthController', () => {
       { ...mockUserBody },
       mockSession,
     );
+
+    expect(user.email).toBe(mockUserBody.email);
   });
 });
