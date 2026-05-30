@@ -10,6 +10,9 @@ export class UserDto {
   @Exclude()
   password: string;
 
+  @Exclude()
+  isAdmin: boolean;
+
   @Expose()
   fullName?() {
     // prettier-ignore

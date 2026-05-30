@@ -18,7 +18,7 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: false })
   isAdmin: boolean;
 
   @OneToMany(() => Report, (photo) => photo.user)
