@@ -11,7 +11,11 @@ import { handleZodErrors } from '../utils/zod-utils';
 
 export class ZodValidationPipe implements PipeTransform {
   transform(value: z.ZodType, metadata: ArgumentMetadata) {
-    const { metatype } = metadata;
+    const { metatype, type } = metadata;
+
+    // prettier-ignore
+    if (type === 'custom') 
+      return value;
 
     // prettier-ignore
     if (!metatype)
@@ -20,7 +24,7 @@ export class ZodValidationPipe implements PipeTransform {
     const schema = getZodSchema(metatype);
 
     // prettier-ignore
-    if (!schema)
+    if (!schema) 
       throw new InternalServerErrorException();
 
     const { error } = schema.safeParse(value);
