@@ -18,6 +18,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column()
+  isAdming: boolean;
+
   @OneToMany(() => Report, (photo) => photo.user)
   reports: Report[];
 }
