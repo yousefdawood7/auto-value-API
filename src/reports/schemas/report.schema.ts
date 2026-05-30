@@ -24,6 +24,12 @@ export const reportSchema = z.object({
     .min(1900, { error: 'Year must be at least from 1900' })
     .max(2050, { error: 'Year must be at most from 2050' }),
 
+  price: z
+    .number({
+      error: zodIssue('Price is required', 'Price must be number'),
+    })
+    .min(500, { error: 'Year must be at least 500$' }),
+
   mileage: z
     .number({
       error: zodIssue('Mileage is required', 'Mileage must be number'),
