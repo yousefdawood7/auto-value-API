@@ -53,8 +53,6 @@ export class AppModule implements NestModule {
       throw new Error('SECRET_KEY is required to sign session cookies');
     }
 
-    consumer
-      .apply(cookieSession({ keys: [secretKey] }))
-      .forRoutes(AuthController);
+    consumer.apply(cookieSession({ keys: [secretKey] })).forRoutes('*');
   }
 }
