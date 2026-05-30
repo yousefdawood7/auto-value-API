@@ -19,7 +19,7 @@ export class User {
   password: string;
 
   @Column()
-  isAdming: boolean;
+  isAdmin: boolean;
 
   @OneToMany(() => Report, (photo) => photo.user)
   reports: Report[];
