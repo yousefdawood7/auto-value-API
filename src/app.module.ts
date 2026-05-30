@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import cookieSession from 'cookie-session';
 import { AuthController } from './auth/auth.controller';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { ReportModule } from './reports/report.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
       synchronize: true,
     }),
     UserModule,
+    ReportModule,
     AuthModule,
   ],
   controllers: [AppController],
