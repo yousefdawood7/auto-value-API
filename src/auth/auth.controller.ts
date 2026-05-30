@@ -8,7 +8,6 @@ import { signInUserSchema } from '../user/schemas/signin-user.schema';
 import { SignInUserDto } from '../user/dto/signin-user.dto';
 import { SignInGuard } from '../common/guards/signin.guard';
 import { SignUpGuard } from '../common/guards/signup.guard';
-import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { UserDto } from '../user/dto/user.dto';
 
 @Controller('auth')
@@ -30,7 +29,7 @@ export class AuthController {
   @Post('signin')
   @UseGuards(SignInGuard)
   signIn(
-    @Body(ZodValidationPipe) body: SignInUserDto,
+    @Body() body: SignInUserDto,
     @Session() session: Record<string, unknown>,
   ) {
     return this.authService.signin(body, session);
