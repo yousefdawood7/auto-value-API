@@ -7,7 +7,7 @@ import {
 import z from 'zod';
 import { getZodSchema } from '../decorators/zod-schema.decorator';
 import { ERROR_CONFIG } from '../configs/error.config';
-import { handleZodErrors } from '../utils/handleZodErrors';
+import { handleZodErrors } from '../utils/zod-utils';
 
 export class ZodValidationPipe implements PipeTransform {
   transform(value: z.ZodType, metadata: ArgumentMetadata) {
