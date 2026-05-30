@@ -31,5 +31,5 @@ export class Report {
   isApproved: boolean;
 
   @ManyToOne(() => User, (user) => user.reports)
-  user: User[];
+  user: User;
 }
