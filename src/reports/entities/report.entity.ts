@@ -27,7 +27,7 @@ export class Report {
   @Column()
   lng: number;
 
-  @Column()
+  @Column({ default: false })
   isApproved: boolean;
 
   @ManyToOne(() => User, (user) => user.reports)

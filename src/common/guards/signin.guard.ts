@@ -11,7 +11,7 @@ import { ERROR_CONFIG } from '../configs/error.config';
 import { UserService } from '../../user/user.service';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class SignInGuard implements CanActivate {
   constructor(private readonly userService: UserService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
