@@ -19,7 +19,6 @@ export class SerializeInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((value) => {
         const instance = plainToInstance(this.dto, value);
-
         return instanceToPlain(instance);
       }),
     );

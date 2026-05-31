@@ -7,7 +7,7 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserService } from '../user/user.service';
 import { randomBytes } from 'crypto';
 import { SignInUserDto } from '../user/dto/signin-user.dto';
-import { hashPassword } from '../common/utils/hashPassword';
+import { hashPassword } from '../common/utils/hash-password';
 import { ERROR_CONFIG } from '../common/configs/error.config';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { UserDto } from '../user/dto/user.dto';

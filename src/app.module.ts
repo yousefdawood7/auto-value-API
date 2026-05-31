@@ -8,8 +8,8 @@ import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import cookieSession from 'cookie-session';
-import { AuthController } from './auth/auth.controller';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { ReportModule } from './reports/report.module';
 
 @Module({
   imports: [
@@ -24,6 +24,7 @@ import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
       synchronize: true,
     }),
     UserModule,
+    ReportModule,
     AuthModule,
   ],
   controllers: [AppController],
@@ -51,8 +52,6 @@ export class AppModule implements NestModule {
       throw new Error('SECRET_KEY is required to sign session cookies');
     }
 
-    consumer
-      .apply(cookieSession({ keys: [secretKey] }))
-      .forRoutes(AuthController);
+    consumer.apply(cookieSession({ keys: [secretKey] })).forRoutes('*');
   }
 }

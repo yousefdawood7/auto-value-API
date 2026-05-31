@@ -1,5 +1,10 @@
 import z from 'zod';
 
+export const zodIssue = function (requiredMsg: string, typeMsg: string) {
+  return (issue: { input: unknown }) =>
+    issue.input === undefined ? requiredMsg : typeMsg;
+};
+
 export const handleZodErrors = function (zodError: z.ZodError) {
   const errorObjects: Record<string, string> = {};
 

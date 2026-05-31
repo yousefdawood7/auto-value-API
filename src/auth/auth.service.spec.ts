@@ -5,7 +5,7 @@ import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { ERROR_CONFIG } from '../common/configs/error.config';
-import { hashPassword } from '../common/utils/hashPassword';
+import { hashPassword } from '../common/utils/hash-password';
 
 describe('AuthService', () => {
   let authService: AuthService;

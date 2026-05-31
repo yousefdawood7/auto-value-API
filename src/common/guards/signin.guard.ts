@@ -2,6 +2,7 @@ import {
   Injectable,
   CanActivate,
   ExecutionContext,
+  BadRequestException,
   UnauthorizedException,
 } from '@nestjs/common';
 import type { Request } from 'express';
@@ -10,18 +11,17 @@ import { ERROR_CONFIG } from '../configs/error.config';
 import { UserService } from '../../user/user.service';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class SignInGuard implements CanActivate {
   constructor(private readonly userService: UserService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const { body, session } = context
+    const { body } = context
       .switchToHttp()
       .getRequest<Request<unknown, unknown, SignInUserDto>>();
 
-    console.log(session);
     // prettier-ignore
-    if (!session.user?.email)
-      throw new UnauthorizedException({...ERROR_CONFIG.AUTHENTICATION_ERROR, message: "You are not currently signed in"});
+    if (!body?.email)
+      throw new BadRequestException({message: 'Email is required'});
 
     const user = await this.userService.findUserByEmail(body.email);
 
