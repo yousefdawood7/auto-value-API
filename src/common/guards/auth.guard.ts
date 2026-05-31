@@ -18,8 +18,9 @@ export class AuthGuard implements CanActivate {
       .switchToHttp()
       .getRequest<Request<unknown, unknown, SignInUserDto>>();
 
+    console.log(session);
     // prettier-ignore
-    if (!session.user.email)
+    if (!session.user?.email)
       throw new UnauthorizedException({...ERROR_CONFIG.AUTHENTICATION_ERROR, message: "You are not currently signed in"});
 
     const user = await this.userService.findUserByEmail(body.email);
