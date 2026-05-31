@@ -28,6 +28,7 @@ describe('AuthController', () => {
       ) => Promise<Partial<User> & { message: string }>
     >((body, session) => {
       session.user = {
+        id: 1,
         email: body.email,
       };
 
@@ -76,6 +77,6 @@ describe('AuthController', () => {
       mockSession,
     );
     expect(user.email).toBe(mockUserBody.email);
-    expect(mockSession).toEqual({ user: { email: mockUserBody.email } });
+    expect(mockSession).toEqual({ user: { id: 1, email: mockUserBody.email } });
   });
 });

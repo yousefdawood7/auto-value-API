@@ -54,6 +54,7 @@ describe('AuthService', () => {
 
     expect(mockSession).toEqual({
       user: {
+        id: 1,
         email: mockedBody.email,
         firstName: mockedBody.firstName,
         lastName: mockedBody.lastName,
