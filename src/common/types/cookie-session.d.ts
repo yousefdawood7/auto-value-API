@@ -2,7 +2,7 @@ import 'cookie-session';
 
 type UserSession = {
   user: {
-    id: string;
+    id: number;
     email: string;
     firstName: string;
     lastName?: string;

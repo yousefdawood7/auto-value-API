@@ -1,3 +1,5 @@
-onlyBuiltDependencies:
-  - '@nestjs/core'
-  - sqlite3
+allowBuilds:
+  '@nestjs/core': true
+  '@scarf/scarf': true
+  sqlite3: true
+  unrs-resolver: true

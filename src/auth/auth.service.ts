@@ -27,9 +27,7 @@ export class AuthService {
       password: hashedSaltedPassword,
     });
 
-    session.user = {
-      ...instanceToPlain(plainToInstance(UserDto, body)),
-    };
+    session.user = instanceToPlain(plainToInstance(UserDto, user));
 
     return user;
   }
@@ -46,9 +44,7 @@ export class AuthService {
     if (signedInPassword !== userPassword)
       throw new UnauthorizedException(ERROR_CONFIG.AUTHENTICATION_ERROR);
 
-    session.user = {
-      ...instanceToPlain(plainToInstance(UserDto, user)), // to run the getters that we defined on the dto itself
-    };
+    session.user = instanceToPlain(plainToInstance(UserDto, user));
 
     return {
       message: 'user signed in successfully',
