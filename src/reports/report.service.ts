@@ -8,7 +8,7 @@ import { CreateReportDto } from './dto/create-report.dto';
 export class ReportService {
   constructor(@InjectRepository(Report) private repo: Repository<Report>) {}
 
-  createReport(body: CreateReportDto, userId: number) {
+  async createReport(body: CreateReportDto, userId: number) {
     const report = this.repo.create({
       ...body,
       user: {
@@ -16,6 +16,13 @@ export class ReportService {
       },
     });
 
-    return this.repo.save(report);
+    const savedReport = await this.repo.save(report);
+
+    return {
+      id: savedReport.id,
+      ...body,
+      userId,
+      isApproved: savedReport.isApproved,
+    };
   }
 }
