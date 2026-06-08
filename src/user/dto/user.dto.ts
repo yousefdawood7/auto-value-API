@@ -38,10 +38,6 @@ export class UserDto {
   @Exclude()
   password: string;
 
-  @ApiHideProperty()
-  @Exclude()
-  isAdmin: boolean;
-
   @ApiPropertyOptional({
     description:
       'Convenience field derived from the first and last name when both are available.',

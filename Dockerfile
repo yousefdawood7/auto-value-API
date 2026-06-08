@@ -14,8 +14,6 @@ RUN pnpm approve-builds --all
 
 COPY . .
 
-RUN touch db.sqlite
-
 FROM base AS dev
 
 

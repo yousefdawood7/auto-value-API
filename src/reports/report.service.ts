@@ -22,7 +22,6 @@ export class ReportService {
       id: savedReport.id,
       ...body,
       userId,
-      isApproved: savedReport.isApproved,
     };
   }
 }

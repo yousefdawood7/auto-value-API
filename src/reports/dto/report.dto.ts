@@ -1,4 +1,4 @@
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 
 export class ReportDto {
@@ -50,10 +50,6 @@ export class ReportDto {
     example: 31.1342,
   })
   lng: number;
-
-  @ApiHideProperty()
-  @Exclude()
-  isApproved: boolean;
 
   @ApiProperty({
     description: 'Identifier of the authenticated user who created the report.',
