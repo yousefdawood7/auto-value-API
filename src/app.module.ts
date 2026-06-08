@@ -17,11 +17,15 @@ import { ReportModule } from './reports/report.module';
       isGlobal: true,
       cache: true,
     }),
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'db.sqlite',
-      entities: [__dirname + '/**/*.entity.{ts,js}'],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        ssl: true,
+        url: configService.getOrThrow<string>('DATABASE_URL'),
+        entities: [__dirname + '/**/*.entity.{ts,js}'],
+        synchronize: false,
+      }),
+      inject: [ConfigService],
     }),
     UserModule,
     ReportModule,
