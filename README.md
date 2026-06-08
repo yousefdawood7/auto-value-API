@@ -4,11 +4,11 @@
 
 A modular, type-safe REST API for vehicle valuation workflows built with [NestJS](https://nestjs.com/) and [TypeScript](https://www.typescriptlang.org/).
 
-![NestJS](https://img.shields.io/badge/NestJS-11.x-E0234E?logo=nestjs&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white)
-![Zod](https://img.shields.io/badge/Zod-4.x-3E67B1)
-![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=nodedotjs&logoColor=white)
-![pnpm](https://img.shields.io/badge/pnpm-10-F69220?logo=pnpm&logoColor=white)
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?logo=nestjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-3E67B1)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=white)
 
 </div>
 
@@ -20,6 +20,7 @@ AutoValue API provides endpoints for user authentication and vehicle valuation r
 
 ### Documentation
 
+- 🌐 Hosted API — [api.auto-value.yousefdawood.me](https://api.auto-value.yousefdawood.me)
 - 📖 Hosted API docs — [docs.auto-value.yousefdawood.me](https://docs.auto-value.yousefdawood.me)
 - 🔧 Local Swagger UI — `http://localhost:3000/docs`
 - 📄 Local OpenAPI JSON — `http://localhost:3000/docs-json`
@@ -178,12 +179,12 @@ signUp(@Body() body: CreateUserDto) {
 
 | Layer            | Technology                         |
 | ---------------- | ---------------------------------- |
-| Framework        | NestJS 11                          |
-| Language         | TypeScript 5.7                     |
+| Framework        | NestJS                             |
+| Language         | TypeScript                         |
 | Database         | PostgreSQL, TypeORM (migrations)   |
-| Validation       | Zod v4                             |
+| Validation       | Zod                                |
 | Authentication   | cookie-session (signed cookies)    |
-| Documentation    | Swagger / OpenAPI 3.x              |
+| Documentation    | Swagger / OpenAPI                  |
 | Testing          | Jest, Supertest                    |
 | Infrastructure   | Docker, Docker Compose             |
 
