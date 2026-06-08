@@ -21,11 +21,12 @@ export class Report {
   @Column()
   price: number;
 
-  @Column()
-  lat: number;
+  @Column({ type: 'decimal', precision: 10, scale: 7 })
+  latitude: number;
 
-  @Column()
-  lng: number;
+  // Longitude ranges from -180 to 180
+  @Column({ type: 'decimal', precision: 11, scale: 7 })
+  longitude: number;
 
   @ManyToOne(() => User, (user) => user.reports)
   user: User;
