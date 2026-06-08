@@ -23,6 +23,8 @@ import { ReportModule } from './reports/report.module';
         ssl: true,
         url: configService.getOrThrow<string>('DATABASE_URL'),
         entities: [__dirname + '/**/*.entity.{ts,js}'],
+        migrations: [__dirname + '/db/migrations/**/*{.js,.ts}'],
+
         synchronize: false,
       }),
       inject: [ConfigService],
