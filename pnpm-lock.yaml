@@ -35,6 +35,9 @@ importers:
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
+      pg:
+        specifier: ^8.21.0
+        version: 8.21.0
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -99,9 +102,6 @@ importers:
       jest:
         specifier: ^30.3.0
         version: 30.4.2(@types/node@25.9.1)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.9.3))
-      pg:
-        specifier: ^8.21.0
-        version: 8.21.0
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
